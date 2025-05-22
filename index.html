@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide: CUBE Fender Screws</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Report Section 1 (Intro): Presented as an introductory text block. Goal: Inform. Method: HTML text. Interaction: Read. Justification: Sets context.
+        - Report Section 2 (Identifying Screws):
+            - General/CUBE Info: Text blocks, bullet points. Goal: Inform/Clarify. Method: HTML text. Interaction: Read. Justification: Essential background.
+            - CUBE Resources (Video Link): Prominent button/link. Goal: Direct to resource. Method: HTML link. Interaction: Click. Justification: Critical external resource.
+            - Table 1 (Potential Specs): Tailwind-styled HTML table. Goal: Organize/Inform. Method: HTML table. Interaction: Read/Reference. Justification: Clear presentation of detailed specs.
+            - Recommended Actions: Bulleted list. Goal: Guide. Method: HTML list. Interaction: Read. Justification: Clear next steps.
+        - Report Section 3 (Purchasing Screws):
+            - Table 2 (Sourcing Options): Tailwind-styled HTML table. Goal: Compare/Inform. Method: HTML table. Interaction: Read/Reference. Justification: Clear comparison of sources.
+            - Sourcing Likelihood Chart: Chart.js horizontal bar chart. Goal: Visualize/Compare. Method: Canvas chart. Interaction: View. Justification: Quick visual summary of likelihood data from Table 2. Library: Chart.js.
+            - What to Look For: Bulleted list. Goal: Inform. Method: HTML list. Interaction: Read. Justification: Practical purchasing advice.
+        - Report Section 4 (Installation): Stepped list with icons. Goal: Instruct. Method: HTML list with Unicode icons. Interaction: Read/Follow. Justification: Clear, actionable installation steps.
+        - Report Section 5 (Summary): Text blocks and prioritized action list. Goal: Summarize/Reinforce. Method: HTML text/list. Interaction: Read. Justification: Key takeaways and final guidance.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All visuals are HTML/CSS/Tailwind, Unicode characters, or Chart.js Canvas.
+    -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-button { transition: all 0.3s ease; }
+        .tab-button.active { background-color: #2dd4bf; color: white; } /* Teal accent */
+        .tab-button:not(.active):hover { background-color: #f0f0f0; } /* Light gray hover */
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        h2 { font-size: 1.75rem; font-weight: 600; margin-bottom: 1rem; color: #374151; } /* Darker gray for headings */
+        h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; color: #4b5563; } /* Medium gray for subheadings */
+        p, li { color: #52525b; line-height: 1.6; } /* Zinc 600 for text */
+        strong { color: #3f3f46; } /* Zinc 700 for strong text */
+        .table-container { max-width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1rem; }
+        th, td { border: 1px solid #d1d5db; padding: 0.75rem; text-align: left; }
+        th { background-color: #f9fafb; color: #374151; font-weight: 600; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; padding: 1rem; background-color: #f9fafb; border-radius: 0.5rem; margin-top:1rem; }
+        .action-item { display: flex; align-items: center; margin-bottom: 0.5rem; padding: 0.75rem; background-color: #f3f4f6; border-radius: 0.375rem; }
+        .action-item-icon { margin-right: 0.75rem; color: #2dd4bf; font-size: 1.25rem; }
+        .link-button { display: inline-block; background-color: #2dd4bf; color: white; padding: 0.75rem 1.5rem; border-radius: 0.375rem; text-decoration: none; font-weight: 500; transition: background-color 0.3s ease; }
+        .link-button:hover { background-color: #14b8a6; }
+        .note { background-color: #fffbeb; border-left: 4px solid #facc15; padding: 1rem; margin-top: 1rem; margin-bottom: 1rem; border-radius: 0.25rem;}
+        .note p { color: #713f12;}
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-teal-600">Interactive Guide: Locating & Installing CUBE Fender Screws</h1>
+            <p class="text-lg text-stone-600 mt-2">Your companion for the CUBE Touring Hybrid Pro 625 with ACID 65 Integrated Carrier 3.0</p>
+        </header>
+
+        <nav id="tab-navigation" class="flex flex-wrap justify-center gap-2 mb-8">
+            <button data-tab="intro" class="tab-button active px-4 py-2 rounded-md font-medium">1. Introduction</button>
+            <button data-tab="identifying" class="tab-button px-4 py-2 rounded-md font-medium">2. Identifying Screws</button>
+            <button data-tab="purchasing" class="tab-button px-4 py-2 rounded-md font-medium">3. Purchasing Screws</button>
+            <button data-tab="installation" class="tab-button px-4 py-2 rounded-md font-medium">4. Installation</button>
+            <button data-tab="summary" class="tab-button px-4 py-2 rounded-md font-medium">5. Summary & Actions</button>
+        </nav>
+
+        <main id="tab-content" class="bg-white p-6 md:p-8 rounded-lg shadow-xl">
+            <section id="intro" class="content-section active">
+                <h2>1. Your Bike & Its Fender System</h2>
+                <p class="mb-4">This guide focuses on finding and installing fender screws for the <strong>CUBE Touring Hybrid Pro 625</strong>. Understanding your bike's specific components is the first step to successful maintenance.</p>
+                <h3>A. Bicycle Model Confirmation</h3>
+                <p>The bicycle in question is the <strong>CUBE Touring Hybrid Pro 625</strong>. This e-trekking bike is known for its integrated features.</p>
+                <h3>B. The ACID 65 Integrated Carrier 3.0</h3>
+                <p>A key feature of this model is its factory-equipped <strong>ACID 65 Integrated Carrier 3.0</strong>. This isn't a standard bolt-on fender; the luggage carrier and mudguards are a cohesive unit. This integrated design means fasteners are likely specific to this system, prioritizing a streamlined look and robust functionality. If you need screws, it's probably for replacement due to loss or damage, making it crucial to find exact matches to maintain the system's integrity.</p>
+                <div class="note">
+                    <p><strong>Key takeaway:</strong> The integrated nature of the ACID 65 system means generic screws might not fit or function correctly. Precision is important!</p>
+                </div>
+            </section>
+
+            <section id="identifying" class="content-section">
+                <h2>2. Identifying the Correct Fender Screws</h2>
+                <p class="mb-4">Determining the precise screws for your ACID Integrated Carrier 3.0 involves understanding general standards, CUBE-specific details, and using available resources.</p>
+
+                <h3>A. General Bicycle Fender Screw Info</h3>
+                <p>Many bikes use <strong>M5 screws</strong> (M5x0.8mm thread) for fenders, often 8mm or 10mm long. Stainless steel is recommended for durability.</p>
+
+                <h3>B. CUBE-Specifics: M4 vs. M5?</h3>
+                <p>Some CUBE models might use <strong>M4 screws</strong> for certain mudguard fittings. This is a critical difference!</p>
+                <ul class="list-disc list-inside my-4 pl-4 space-y-2">
+                    <li><strong>Test for M5:</strong> Try threading a standard bottle cage bolt (usually M5) into the fender mounting hole. If it fits smoothly, it's M5. If not, it could be M4.</li>
+                    <li><strong>Caution:</strong> Forcing an M5 screw into an M4 hole will damage threads. M4 screws are smaller and easier to cross-thread or strip if over-tightened.</li>
+                </ul>
+
+                <h3>C. CUBE Resources: Manuals, Parts, and Video</h3>
+                <p>While general CUBE manuals exist, they don't usually detail specific screw sizes for integrated systems. Spare parts lists also might not itemize individual screws for the ACID IC 3.0.</p>
+                <p class="my-4">A crucial resource is the official <strong>CUBE "ACID MUDGUARD + CARRIER INSTALLATION VIDEO"</strong>. This video can visually show the screws used.</p>
+                <a href="https://file.cube.eu/azwesc1xfg346/media/68/6a/23/1658481375/ACID_Schutzblech_Mudguard_Gepaecktraeger_Carrier_Montagevideo_Installation_video.mp4?ts=1658481375" target="_blank" class="link-button mb-4">Watch CUBE Installation Video <span class="text-xs">(opens new tab)</span></a>
+                <p>Screws for this system are likely part of the initial hardware kit. For replacements, a CUBE dealer is your best bet as they have access to internal technical documents.</p>
+
+                <h3>D. Likely Screw Types & Locations (Verify!)</h3>
+                <p>The table below outlines potential screw specifications. <strong>These must be verified using the video or by a CUBE dealer.</strong></p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mounting Location</th>
+                                <th>Most Likely Screw Diameter</th>
+                                <th>Potential Length Range (mm)</th>
+                                <th>Common Head Type</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mudguard to Carrier Stay Attachment</td>
+                                <td>M4 or M5</td>
+                                <td>8 - 16</td>
+                                <td>Allen (Hex), Torx, Button Head, Countersunk</td>
+                                <td>Specific to IC 3.0 system</td>
+                            </tr>
+                            <tr>
+                                <td>Mudguard to Carrier Bridge/Cross-member</td>
+                                <td>M4 or M5</td>
+                                <td>6 - 12</td>
+                                <td>Allen (Hex), Torx, Button Head, Countersunk</td>
+                                <td>Specific to IC 3.0 system</td>
+                            </tr>
+                            <tr>
+                                <td>Mudguard Stay to Frame/Fork Adapter</td>
+                                <td>M5 (typically)</td>
+                                <td>10 - 16</td>
+                                <td>Allen (Hex), Button Head</td>
+                                <td>May use CUBE/ACID specific adapters</td>
+                            </tr>
+                            <tr>
+                                <td>Mudguard to Fork Crown (via bracket or direct)</td>
+                                <td>M5 or M6</td>
+                                <td>8 - 20</td>
+                                <td>Allen (Hex), Torx</td>
+                                <td>May use CUBE/ACID specific bracket</td>
+                            </tr>
+                            <tr>
+                                <td>Mudguard to Chainstay Bridge</td>
+                                <td>M5</td>
+                                <td>8 - 12</td>
+                                <td>Allen (Hex), Button Head</td>
+                                <td>If applicable</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <div class="note">
+                     <p><strong>Important:</strong> The specifications in Table 1 are illustrative. Always verify with the CUBE installation video or an official dealer.</p>
+                 </div>
+
+                <h3>E. Recommended Action for Precise Identification</h3>
+                <ol class="list-decimal list-inside my-4 pl-4 space-y-2">
+                    <li><strong>Watch the CUBE Installation Video:</strong> Pause and examine screws visually.</li>
+                    <li><strong>Inspect Threaded Holes:</strong> If screws are missing, use the M5 bottle cage bolt test. Measure hole depth and part thickness.</li>
+                    <li><strong>Contact an Official CUBE Dealer:</strong> Most reliable method for exact part numbers.</li>
+                </ol>
+            </section>
+
+            <section id="purchasing" class="content-section">
+                <h2>3. Locating and Purchasing Fender Screws</h2>
+                <p class="mb-4">Once you've identified the required screw specifications, here’s where you can find them.</p>
+
+                <h3>A. Sourcing Options Overview</h3>
+                <p>The best source depends on the information you have and the specificity of the screw.</p>
+                <div class="table-container">
+                     <table>
+                        <thead>
+                            <tr>
+                                <th>Source Type</th>
+                                <th>What to Ask For/Look For</th>
+                                <th>Pros</th>
+                                <th>Cons</th>
+                                <th>Likelihood of Exact Match for IC 3.0</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Official CUBE Dealer</strong></td>
+                                <td>Bike Model (Touring Hybrid Pro 625), Model Year, Component (ACID 65 Integrated Carrier 3.0)</td>
+                                <td>Highest chance of correct OEM part, access to CUBE technical data</td>
+                                <td>May need to order parts, potentially higher cost than generic</td>
+                                <td data-likelihood="Very High">Very High</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Online Bike Parts Specialist</strong></td>
+                                <td>Specific screw dimensions (M-size, length, head type, material), "fender screws"</td>
+                                <td>Wide selection, competitive pricing for generic screws</td>
+                                <td>Exact match for proprietary system not guaranteed without precise specs, risk of incorrect purchase</td>
+                                <td data-likelihood="Medium to Low">Medium to Low</td>
+                            </tr>
+                            <tr>
+                                <td><strong>General Hardware Store</strong></td>
+                                <td>Specific screw dimensions (M-size, length, head type, material)</td>
+                                <td>Readily accessible for standard screws</td>
+                                <td>Limited selection of stainless steel & specialized cycling head types</td>
+                                <td data-likelihood="Low">Low</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>B. Visualizing Sourcing Likelihood</h3>
+                <p>This chart provides a quick visual comparison of the likelihood of finding an exact match from different sources, based on information from Table 2.</p>
+                <div class="chart-container">
+                    <canvas id="sourcingLikelihoodChart"></canvas>
+                </div>
+
+
+                <h3>C. What to Look For / Ask For When Buying</h3>
+                <ul class="list-disc list-inside my-4 pl-4 space-y-2">
+                    <li><strong>If CUBE part number is known:</strong> Provide this to the dealer/retailer.</li>
+                    <li><strong>If self-identifying:</strong>
+                        <ul class="list-circle list-inside ml-6 mt-1 space-y-1">
+                            <li>Specify <strong>thread size</strong> (e.g., M4 or M5).</li>
+                            <li>Specify <strong>thread pitch</strong> (e.g., M5 is 0.8mm, M4 is 0.7mm).</li>
+                            <li>Specify <strong>length</strong> (measured from under the head).</li>
+                            <li>Specify <strong>head type</strong> (Allen, Torx, Phillips; button, cap, countersunk).</li>
+                            <li>Specify <strong>material</strong> (stainless steel strongly recommended).</li>
+                        </ul>
+                    </li>
+                    <li>Bringing existing screws or clear photos to a dealer is very helpful.</li>
+                </ul>
+                 <div class="note">
+                     <p><strong>Tip:</strong> For the ACID Integrated Carrier 3.0, an official CUBE dealer is your most reliable path to the correct OEM screws.</p>
+                 </div>
+            </section>
+
+            <section id="installation" class="content-section">
+                <h2>4. Essential Tips for Fender Screw Installation</h2>
+                <p class="mb-4">Correct installation is crucial for the longevity and proper function of your fender system.</p>
+                <div class="space-y-4">
+                    <div class="action-item">
+                        <span class="action-item-icon">🔩</span>
+                        <div>
+                            <h4 class="font-semibold">Verify Screw Specifications</h4>
+                            <p>Double-check new screws against old ones or identified specs (diameter, pitch, length, head type).</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-item-icon">🔧</span>
+                        <div>
+                            <h4 class="font-semibold">Use the Correct Tools</h4>
+                            <p>Employ the right size and type of Allen key, Torx driver, or screwdriver to avoid damaging screw heads.</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-item-icon">🖐️</span>
+                        <div>
+                            <h4 class="font-semibold">Start Screws by Hand</h4>
+                            <p>Thread screws by hand for the first few turns to prevent cross-threading. If there's resistance, stop and realign.</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-item-icon">⚖️</span>
+                        <div>
+                            <h4 class="font-semibold">Proper Tightening Torque</h4>
+                            <p>Do not overtighten. Fender screws don't need high torque. For M4 screws, be especially gentle (around 4 Nm as a rough guide). Tighten until snug.</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-item-icon">⚙️</span>
+                        <div>
+                            <h4 class="font-semibold">Consider Washers and Thread Locker</h4>
+                            <p><strong>Washers:</strong> Use if original hardware had them, to distribute force. <br><strong>Thread Locker:</strong> Low-strength (blue) can prevent screws from vibrating loose.</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-item-icon">🎬</span>
+                        <div>
+                            <h4 class="font-semibold">Reference CUBE's Installation Video</h4>
+                            <p>Refer to the official video for assembly sequence and specific nuances of the ACID IC 3.0 system.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="note mt-6">
+                    <p><strong>Why this matters:</strong> Correctly installed screws prevent rattles, fender rubbing, and damage to your bike's frame or carrier system. It ensures safety and a better riding experience.</p>
+                </div>
+            </section>
+
+            <section id="summary" class="content-section">
+                <h2>5. Summary and Final Recommendations</h2>
+                <p class="mb-4">Successfully finding and fitting screws for your CUBE Touring Hybrid Pro 625's specialized ACID 65 Integrated Carrier 3.0 requires attention to detail.</p>
+
+                <h3>A. Recap of Key Challenges</h3>
+                <ul class="list-disc list-inside my-4 pl-4 space-y-2">
+                    <li>The bike uses the specific <strong>ACID 65 Integrated Carrier 3.0</strong>; mudguard attachment is integral.</li>
+                    <li>Exact screw specs are not widely published for this system.</li>
+                    <li>Possibility of M4 or M5 screws requiring careful verification.</li>
+                </ul>
+
+                <h3>B. Prioritized Action Plan</h3>
+                <p>Follow these steps for the best outcome:</p>
+                <ol class="list-decimal list-inside my-4 pl-4 space-y-3">
+                    <li class="action-item"><span class="action-item-icon">🥇</span><div><strong>Primary: Review CUBE Installation Video.</strong> This is your most direct visual guide from the manufacturer.</div></li>
+                    <li class="action-item"><span class="action-item-icon">🥈</span><div><strong>Secondary: Contact an Official CUBE Dealer.</strong> They have access to detailed technical info and parts systems.</div></li>
+                    <li class="action-item"><span class="action-item-icon">🥉</span><div><strong>Tertiary (with caution): Source Independently.</strong> Meticulously verify thread size (M4/M5), exact length, and head type. Prioritize stainless steel.</div></li>
+                </ol>
+
+                <h3>C. Final Advice</h3>
+                <p>When installing, always start screws by hand to prevent cross-threading and avoid excessive force. Using correct, original-spec screws (or precise equivalents) ensures the best fit, maintains structural integrity, and provides lasting, rattle-free performance. Taking the time to do this right is preferable to risking damage or a compromised setup.</p>
+                <div class="note">
+                    <p><strong>Well done!</strong> By following these steps, you're ensuring your CUBE bike remains in top condition for many enjoyable rides.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-12 py-4 border-t border-stone-300">
+            <p class="text-sm text-stone-500">&copy; Fender Screw Interactive Guide. Information adapted from technical reports.</p>
+        </footer>
+    </div>
+
+    <script>
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const contentSections = document.querySelectorAll('.content-section');
+        const tabNavigation = document.getElementById('tab-navigation');
+
+        tabNavigation.addEventListener('click', (event) => {
+            const targetButton = event.target.closest('.tab-button');
+            if (!targetButton) return;
+
+            const tabId = targetButton.dataset.tab;
+
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            targetButton.classList.add('active');
+
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === tabId) {
+                    section.classList.add('active');
+                }
+            });
+        });
+
+        // Chart.js for Sourcing Likelihood
+        const sourcingTable = document.querySelector('#purchasing table');
+        const chartData = {
+            labels: [],
+            datasets: [{
+                label: 'Likelihood of Exact Match',
+                data: [],
+                backgroundColor: [
+                    'rgba(45, 212, 191, 0.6)', // Teal
+                    'rgba(250, 204, 21, 0.6)',  // Amber
+                    'rgba(248, 113, 113, 0.6)' // Red
+                ],
+                borderColor: [
+                    'rgba(45, 212, 191, 1)',
+                    'rgba(250, 204, 21, 1)',
+                    'rgba(248, 113, 113, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const likelihoodScores = {
+            "Very High": 3,
+            "Medium to Low": 1.5,
+            "Low": 0.5
+        };
+        
+        if (sourcingTable) {
+            const rows = sourcingTable.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const sourceCell = row.cells[0];
+                const likelihoodCell = row.cells[4]; // 5th cell for likelihood
+
+                if (sourceCell && likelihoodCell) {
+                    chartData.labels.push(sourceCell.textContent.trim());
+                    const likelihoodText = likelihoodCell.dataset.likelihood || likelihoodCell.textContent.trim();
+                    chartData.datasets[0].data.push(likelihoodScores[likelihoodText] || 0);
+                }
+            });
+        }
+
+
+        const ctxSourcing = document.getElementById('sourcingLikelihoodChart');
+        if (ctxSourcing && chartData.labels.length > 0) {
+            new Chart(ctxSourcing, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 3.5,
+                            ticks: {
+                                stepSize: 0.5,
+                                callback: function(value) {
+                                    if (value === 0.5) return 'Low';
+                                    if (value === 1.5) return 'Medium';
+                                    if (value === 3) return 'Very High';
+                                    return '';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const score = context.raw;
+                                    let likelihoodCategory = 'Unknown';
+                                    if (score === 3) likelihoodCategory = 'Very High';
+                                    else if (score === 1.5) likelihoodCategory = 'Medium to Low';
+                                    else if (score === 0.5) likelihoodCategory = 'Low';
+                                    label += likelihoodCategory;
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } else if (ctxSourcing) {
+             ctxSourcing.parentElement.innerHTML = "<p class='text-center text-stone-500'>Chart data could not be loaded from the table.</p>";
+        }
+    </script>
+</body>
+</html>
